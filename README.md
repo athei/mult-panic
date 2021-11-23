@@ -6,7 +6,7 @@ panic function. The following things need to be true to reproduce the bug:
 * target must be wasm32-unknown-unknown
 * overflow checks must be enabled
 * link time optimization must be enabled
-* core must be recompiled with these flags using cargo xbuild or the std aware cargo
+* core must be recompiled using -Z build-std
 * The compiler needs to insert a call to `memcpy`
 
 The non existent imported function will be then called by the overflow checks in the
@@ -18,7 +18,7 @@ I tested these steps with `rustc 1.58.0-nightly (936f2600b 2021-11-22)`. Version
 less seem to be unaffected. Therefore the first version to have this bug is `2021-11-18`.
 
 ```shell
-cargo +nightly build --release --target wasm32-unknown-unknown --no-default-features -Z build-std
+cargo +nightly build --release --target wasm32-unknown-unknown -Z build-std
 wasm2wat target/wasm32-unknown-unknown/release/mult_panic.wasm | less
 ```
 
